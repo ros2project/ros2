@@ -90,7 +90,7 @@ def generate_launch_description():
     return LaunchDescription([
         rsp,
         # joystick,
-        # twist_mux,
+        twist_mux,
         gazebo,
         spawn_entity,
         diff_drive_spawner,

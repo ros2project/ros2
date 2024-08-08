@@ -34,6 +34,10 @@ def generate_launch_description():
     default_bt_xml_filename = LaunchConfiguration('default_bt_xml_filename')
     map_subscribe_transient_local = LaunchConfiguration('map_subscribe_transient_local')
 
+    map_dir = LaunchConfiguration(
+    'map',
+    default='/home/teo/ros2_ws/gazebo_map.yaml')
+
     lifecycle_nodes = ['controller_server',
                        'planner_server',
                        'recoveries_server',
@@ -94,6 +98,13 @@ def generate_launch_description():
             'map_subscribe_transient_local', default_value='false',
             description='Whether to set the map subscriber QoS to transient local'),
 
+##################################################
+        DeclareLaunchArgument(
+            'map',
+            default_value='/home/teo/ros2_ws/gazebo_map.yaml',
+            description='Full path to the map file to load'),
+
+
         Node(
             package='nav2_controller',
             executable='controller_server',
@@ -141,5 +152,16 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time},
                         {'autostart': autostart},
                         {'node_names': lifecycle_nodes}]),
+
+########################################################
+        Node(
+            package='nav2_map_server',
+            executable='map_server',
+            name='map_server',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time,
+                        'yaml_filename': map_dir}],
+            remappings=remappings),
+
 
     ])
