@@ -16,7 +16,8 @@ class GoalCheckerNode(Node):
 
         self.odom_subscriber = self.create_subscription(
             Odometry,
-            '/odom',
+            '/diff_cont/odom',
+            #'/odom',
             self.odom_callback,
             10
         )
@@ -44,6 +45,7 @@ class GoalCheckerNode(Node):
     def odom_callback(self, msg):
         if self.goal_pose:
             current_pose = msg.pose.pose
+            ##self.get_logger().info(f"current pose:{current_pose}")
             distance = self.calculate_distance(current_pose, self.goal_pose)
 
             if distance < self.goal_threshold:
